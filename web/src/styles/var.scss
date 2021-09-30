@@ -1,0 +1,61 @@
+/* 改变主题色变量 */
+
+$--color-primary: rgb(10, 102, 7);
+// $--color-primary: #005aab;
+//辅助色次要按钮、提示颜色
+$--color-red: #ff3300;
+$--color-blue: #2f80ff;
+$--color-green: #3cd489;
+$--color-orange: #fe9b00;
+$--color-white: #eee;
+
+// 字体色
+// Primary Text
+$--color-text-primary: rgb(19, 161, 14);
+$--color-text-sub: #0a6607;
+// Regular Text
+$--color-text-regular: #666;
+// Secondary Text
+$--color-text-secondary: #999;
+// Placeholder 用于时间输入提示等
+$--color-text-placeholder: #c0c4cc;
+
+// Border Base 边框色
+$--border-color-base: #dcdfe6;
+// Border Light 2级边框色
+$--border-color-light: #e4e7ed;
+// Border Lighter 3级边框色
+$--border-color-lighter: #ebeef5;
+// Border Extralight 4级边框色
+$--border-color-extra-light: #f2f6fc;
+
+// 基本背景色
+$--background-color-base: #f9f9f9;
+
+// 基础圆角
+$--border-radius-base: 4px;
+// 小圆角
+$--small-border-radius: 8px;
+// 大圆角
+$--large-border-radius: 10px;
+
+// 自定义颜色
+// 菜单底色，提示底色
+$--primary-menu-background-color: rgba(
+  $color: $--color-primary,
+  $alpha: 0.1
+);
+$--orange-background-color: rgba(
+  $color: $--color-orange,
+  $alpha: 0.1
+);
+$--green-background-color: rgba(
+  $color: $--color-green,
+  $alpha: 0.1
+);
+$--blue-background-color: rgba(
+  $color: $--color-blue,
+  $alpha: 0.1
+);
+// dialog
+$--dialog-padding-primary: 15px;

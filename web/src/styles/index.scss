@@ -1,0 +1,135 @@
+@import "./transition.scss";
+@import "./iconfont/index.css";
+
+.g-basic-scroll::-webkit-scrollbar,
+.g-basic-scroll-child-div > div::-webkit-scrollbar {
+  border-radius: 4px;
+  width: 6px;
+  height: 10px;
+}
+.g-basic-scroll::-webkit-scrollbar-track,
+.g-basic-scroll-child-div > div::-webkit-scrollbar-track {
+  border-radius: 4px;
+}
+.g-basic-scroll::-webkit-scrollbar-thumb,
+.g-basic-scroll-child-div > div::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba($color: #eee, $alpha: 0.2);
+  display: none;
+  &:hover {
+    background-color: rgba($color: #eee, $alpha: 0.5);
+  }
+}
+.g-basic-scroll:hover::-webkit-scrollbar-thumb,
+.g-basic-scroll-child-div > div:hover::-webkit-scrollbar-thumb {
+  display: block;
+}
+
+// 离屏渲染优化
+.cva {
+  content-visibility: auto;
+}
+
+.iep-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[class*="iep-flex-ellipsis"] {
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+@for $i from 1 through 200 {
+  .m-#{$i} {
+    margin: $i + px;
+  }
+  .m-t-#{$i} {
+    margin-top: $i + px;
+  }
+  .m-b-#{$i} {
+    margin-bottom: $i + px;
+  }
+  .m-l-#{$i} {
+    margin-left: $i + px;
+  }
+  .m-r-#{$i} {
+    margin-right: $i + px;
+  }
+  .p-#{$i} {
+    padding: $i + px;
+  }
+  .p-t-#{$i} {
+    padding-top: $i + px;
+  }
+  .p-b-#{$i} {
+    padding-bottom: $i + px;
+  }
+  .p-l-#{$i} {
+    padding-left: $i + px;
+  }
+  .p-r-#{$i} {
+    padding-right: $i + px;
+  }
+  .fz-#{$i} {
+    font-size: $i + px;
+  }
+  .iep-flex-ellipsis-#{$i} {
+    -webkit-line-clamp: $i;
+    line-clamp: $i;
+  }
+  .grid-span-#{$i} {
+    grid-column-start: span $i;
+  }
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+[class*="mask-model"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.mask-model-dark {
+  background-color: rgba($color: #000000, $alpha: 0.5);
+}
+
+.flex-c-c {
+  flex-direction: column;
+}
+.flex-c-c-r {
+  flex-direction: column-reverse;
+}
+.flex-c-r {
+  flex-direction: row;
+}
+.flex-c-r-r {
+  flex-direction: row-reverse;
+}
+[class*="flex-"] {
+  display: flex;
+}
+[class*="flex-c"] {
+  justify-content: center;
+  align-items: center;
+}
+
+.event-none {
+  pointer-events: none;
+  & > * {
+    pointer-events: visible;
+  }
+}

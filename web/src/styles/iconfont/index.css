@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "kbmaniconfont"; /* Project id 2656965 */
+  src: url("//at.alicdn.com/t/font_2656965_wj1n1shnlb.woff2?t=1626935040467")
+      format("woff2"),
+    url("//at.alicdn.com/t/font_2656965_wj1n1shnlb.woff?t=1626935040467")
+      format("woff"),
+    url("//at.alicdn.com/t/font_2656965_wj1n1shnlb.ttf?t=1626935040467")
+      format("truetype");
+}
+
+[class*="icon-kbman"] {
+  font-family: "kbmaniconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
