@@ -11,3 +11,5 @@ export class KBWSDTO<T = GObj> implements KBWSVO {
     return JSON.stringify(this);
   }
 }
+
+export const Obj: TestVO = {};
