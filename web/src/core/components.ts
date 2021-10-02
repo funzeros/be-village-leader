@@ -1,8 +1,25 @@
 import { App, Component } from "vue";
 
-import FaceIcon from "/@/components/FaceIcon/index.vue";
-
-const components: Component[] = [FaceIcon];
+// common
+import GButton from "/@/components/common/Button.vue";
+import GImg from "/@/components/common/Image.vue";
+// emojiIcon
+import EmojiIcon from "/@/components/emojiIcon/index.vue";
+// form
+import GInput from "/@/components/form/Input.vue";
+import GFormItem from "/@/components/form/FormItem.vue";
+import GForm from "/@/components/form/Form.vue";
+const components: Component[] = [
+  // common
+  GImg,
+  GButton,
+  // emojiIcon
+  EmojiIcon,
+  // form
+  GInput,
+  GFormItem,
+  GForm
+];
 
 const installIepComponents = (app: App<Element>) => {
   components.forEach(component => {

@@ -63,3 +63,8 @@ interface DateCell {
 interface Window {
   isInput: boolean;
 }
+
+interface MessageList {
+  type: string;
+  title: string;
+}

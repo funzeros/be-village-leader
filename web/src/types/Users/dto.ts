@@ -15,7 +15,7 @@ export class UserInfoDTO implements UserInfoVO {
   chip = 0; // 碎片
   exp = 0; // 经验
   medal = 0; // 奖章
-  roleP: XY = { x: 0, y: 0 };
+  roleP: GObj = { x: 0, y: 0 };
   keyPools: string[] = [];
 }
 

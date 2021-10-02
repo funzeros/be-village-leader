@@ -2,11 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import type { App } from "vue";
 
 // 静态路由
-import { PAGE_NOT_FOUND_ROUTE, viewsRouter } from "./constant";
+import { PAGE_NOT_FOUND_ROUTE, pageRouter } from "./constant";
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [...viewsRouter]
+  routes: [...pageRouter]
 });
 
 // config router

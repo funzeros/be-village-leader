@@ -1,0 +1,118 @@
+// basic
+.width-full {
+  width: 100%;
+}
+.height-full {
+  height: 100%;
+}
+// display
+.flex {
+  display: flex;
+}
+.inline-block {
+  display: inline-block;
+}
+.block {
+  display: block;
+}
+// flex
+.flex-dc {
+  flex-direction: column;
+}
+.flex-dcr {
+  flex-direction: column-reverse;
+}
+.flex-dr {
+  flex-direction: row;
+}
+.flex-drr {
+  flex-direction: row-reverse;
+}
+.flex-1 {
+  flex: 1;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.align-items-center {
+  align-items: center;
+}
+.align-self-start {
+  align-self: flex-start;
+}
+.align-self-end {
+  align-self: flex-end;
+}
+.flex-center-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.event-none {
+  pointer-events: none;
+}
+.event-none-only {
+  pointer-events: none;
+  & > * {
+    pointer-events: visible;
+  }
+}
+
+.iep-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[class*="iep-flex-ellipsis"] {
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+@for $i from 1 through 200 {
+  .m-#{$i} {
+    margin: $i + px;
+  }
+  .m-t-#{$i} {
+    margin-top: $i + px;
+  }
+  .m-b-#{$i} {
+    margin-bottom: $i + px;
+  }
+  .m-l-#{$i} {
+    margin-left: $i + px;
+  }
+  .m-r-#{$i} {
+    margin-right: $i + px;
+  }
+  .p-#{$i} {
+    padding: $i + px;
+  }
+  .p-t-#{$i} {
+    padding-top: $i + px;
+  }
+  .p-b-#{$i} {
+    padding-bottom: $i + px;
+  }
+  .p-l-#{$i} {
+    padding-left: $i + px;
+  }
+  .p-r-#{$i} {
+    padding-right: $i + px;
+  }
+  .fz-#{$i} {
+    font-size: $i + px;
+  }
+}
+@for $i from 1 through 10 {
+  .iep-flex-ellipsis-#{$i} {
+    -webkit-line-clamp: $i;
+    line-clamp: $i;
+  }
+  .grid-span-#{$i} {
+    grid-column-start: span $i;
+  }
+}
