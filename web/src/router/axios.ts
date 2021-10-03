@@ -7,7 +7,7 @@ import { ErrorCodeKey, processResponseData } from "./utils";
 const request = axios.create({
   timeout: requestTimeout,
   baseURL: requestBaseURL,
-  withCredentials: true,
+  withCredentials: false,
   validateStatus: status => {
     return status >= 200 && status <= 600; // 全部允许, 不会遇到错误就停止
   }

@@ -3,13 +3,11 @@ import { RootState } from "/@/store/types";
 import { UserState } from "./types";
 import { ActionContext, ActionTree } from "vuex";
 import { MutationTypes } from "./mutation-types";
-import { authTokenReq } from "/@/api/Users";
 import { KBWS } from "/@/hooks/useWs";
 export type Actions<S = UserState, R = RootState> = {
   [ActionTypes.TOKEN_AUTH]({
     state,
-    commit,
-    dispatch
+    commit
   }: ActionContext<S, R>): Promise<boolean>;
   [ActionTypes.INIT_WS]({
     state,
@@ -19,22 +17,22 @@ export type Actions<S = UserState, R = RootState> = {
 };
 
 export const actions: ActionTree<UserState, RootState> & Actions = {
-  async [ActionTypes.TOKEN_AUTH]({ state, commit, dispatch }) {
+  async [ActionTypes.TOKEN_AUTH]({ state, commit }) {
     try {
       commit(MutationTypes.GET_USERINFO);
       if (state.userInfo?.token) {
-        const { data } = await authTokenReq();
-        if (data) {
-          commit(MutationTypes.SET_USERINFO, data);
-          // 每次授权后尝试连接ws
-          dispatch(ActionTypes.INIT_WS);
-          return true;
-        }
+        // const { data } = await authTokenReq();
+        // if (data) {
+        // commit(MutationTypes.SET_USERINFO, data);
+        // 每次授权后尝试连接ws
+        // dispatch(ActionTypes.INIT_WS);
+        // return true;
+        // }
         commit(MutationTypes.CLEAR_USERINFO);
       }
       return false;
     } catch (error) {
-      console.error(new Error(error));
+      console.error(error);
       commit(MutationTypes.CLEAR_USERINFO);
       return false;
     }

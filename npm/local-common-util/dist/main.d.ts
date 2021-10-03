@@ -1,6 +1,1 @@
-interface TestVO {
-  firstName: string;
-  lastName: string;
-}
-declare const TextDTO: TestVO;
-export { TextDTO };
+export * from "./user";

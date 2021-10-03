@@ -4,7 +4,7 @@ const gForm = defineComponent({
   name: "GForm",
   setup(_, { slots }) {
     return () => {
-      return <div class="g-form">{slots.default && slots.default()}</div>;
+      return <form class="g-form">{slots.default && slots.default()}</form>;
     };
   }
 });

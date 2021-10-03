@@ -4,11 +4,12 @@ import { ActionTypes } from "/@/store/modules/user/action-types";
 import { UserInfoDTO } from "/@/types/Users/dto";
 import { KBWSDTO } from "/@/types/WS/dto";
 import { MutationTypes } from "../store/modules/user/mutation-types";
+import { gMessage } from ".";
 
 const wsFunc: Partial<KBWSTypes> = {
   connect: [
     (ws, res) => {
-      console.log(res.data.msg);
+      gMessage.info(res.data.msg);
     }
   ],
   syncUsers: [],
@@ -43,7 +44,7 @@ export class KBWS {
   }
   // ws连接
   connectWs() {
-    if (!this.ws) return //gMessage("未创建ws服务，无法连接", "error");
+    if (!this.ws) return gMessage.error("未创建ws服务，无法连接");
     const ws = this.ws;
     ws.onopen = () => {
       this.WSFirstConnect(ws);
@@ -59,7 +60,7 @@ export class KBWS {
       router.push({ name: "标题" });
     };
     ws.onerror = () => {
-      //gMessage("很抱歉，在线服务连接异常，请稍后再试", "error");
+      gMessage.error("很抱歉，在线服务连接异常，请稍后再试");
     };
   }
   // json转str

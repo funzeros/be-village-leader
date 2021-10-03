@@ -1,10 +1,11 @@
 import { ObjectDirective } from "vue";
+import { gMessage } from "../hooks";
 const directive: ObjectDirective = {
   beforeMount(el, { value }) {
     el.$value = value; // 用一个全局属性来存传进来的值，因为这个值在别的钩子函数里还会用到
     el.handler = () => {
       if (!el.$value) {
-        console.log("无复制内容");
+        gMessage.info("无复制内容");
         return;
       }
       // 动态创建 textarea 标签
@@ -21,7 +22,7 @@ const directive: ObjectDirective = {
       textarea.select();
       textarea.setSelectionRange(0, textarea.value.length);
       const result = document.execCommand("Copy");
-      if (result) console.log("复制成功", "success");
+      if (result) gMessage.success("复制成功");
       document.body.removeChild(textarea);
     };
     // 绑定点击事件，就是所谓的一键 copy 啦

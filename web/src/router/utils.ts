@@ -2,6 +2,7 @@ import { loginRoutePath } from "/@/const/path";
 // import store from "/@/store";
 // import { ActionTypes } from "/@/store/modules/user/action-types";
 import { router } from "./index";
+import { gMessage } from "../hooks";
 
 const errorCode = {
   // 4dd
@@ -26,7 +27,6 @@ type ErrorCodeKey = keyof ErrorCode;
 function getErrorCode(name: ErrorCodeKey, msg = ""): string {
   return errorCode[name] || msg;
 }
-
 
 /**
  * 清除用户信息并请用户去登录
@@ -61,12 +61,12 @@ export const processResponseData = (
     const msg = getErrorCode(status);
     // 除了验证400以外的全部报错
     if (msg) {
-      // showNotification(msg);
+      gMessage.error(msg);
       clearInfoToLogin();
       throw Error(msg);
     } else {
       // 显示验证错误信息
-      // showNotification(resData.msg);
+      gMessage.error(resData.message);
       return resData;
     }
   } else if (/5\d\d/.test(status)) {
@@ -76,15 +76,15 @@ export const processResponseData = (
     const msg = getErrorCode(status);
     // 除了验证500以外的全部报错
     if (msg) {
-      // showNotification(msg);
-      if (process.env.NODE_ENV === "development" || /503/.test(status)) {
+      gMessage.error(msg);
+      if (import.meta.env.NODE_ENV === "development" || /503/.test(status)) {
         return resData;
       } else {
         clearInfoToLogin();
         throw Error(msg);
       }
     } else {
-      // showNotification(build500ErrorMsg(resData.msg));
+      gMessage.error(build500ErrorMsg(resData.message));
       return resData;
     }
   } else {

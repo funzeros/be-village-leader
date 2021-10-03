@@ -1,11 +1,15 @@
-import md5 from "md5";
+// import md5 from "md5";
 import { cloneDeep } from "lodash";
 
 /**
  * 加密字符串不可逆
  * @param str 加密对象
  */
-export const encryptStr = (str: string) => md5(str);
+export const encryptStr = (str: string) =>
+  btoa(encodeURIComponent(str))
+    .split("")
+    .map(m => String.fromCharCode(m.charCodeAt(0) + 9))
+    .join("");
 
 /**
  * 对象加密部分字段

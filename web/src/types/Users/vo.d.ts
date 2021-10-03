@@ -36,3 +36,10 @@ interface BasePropertyVO {
   dre: number; // 暗抗
 }
 type BaseProps = keyof BasePropertyVO;
+
+interface LoginAndRegisterVO<T> {
+  isLogin: boolean;
+  isSend?: boolean;
+  msg?: string;
+  userInfo: T;
+}

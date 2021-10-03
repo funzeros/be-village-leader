@@ -1,7 +1,9 @@
 interface R<T = GObj> {
   code: number;
+  status: number;
+  timestamp: number;
   data: T;
-  msg: string;
+  message: string;
 }
 
 interface PageBase {

@@ -1,9 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TextDTO = void 0;
-const TextDTO = {
-  firstName: "A",
-  lastName: "B",
-};
-exports.TextDTO = TextDTO;
+const tslib_1 = require("tslib");
+(0, tslib_1.__exportStar)(require("./user"), exports);
 //# sourceMappingURL=main.js.map

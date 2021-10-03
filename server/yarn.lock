@@ -897,6 +897,13 @@
   resolved "https://registry.npmmirror.com/@types/node/download/@types/node-16.10.2.tgz#5764ca9aa94470adb4e1185fe2e9f19458992b2e"
   integrity sha1-V2TKmqlEcK204Rhf4unxlFiZKy4=
 
+"@types/nodemailer@^6.4.4":
+  version "6.4.4"
+  resolved "https://registry.nlark.com/@types/nodemailer/download/@types/nodemailer-6.4.4.tgz?cache=0&sync_timestamp=1629708933465&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fnodemailer%2Fdownload%2F%40types%2Fnodemailer-6.4.4.tgz#c265f7e7a51df587597b3a49a023acaf0c741f4b"
+  integrity sha1-wmX356Ud9YdZezpJoCOsrwx0H0s=
+  dependencies:
+    "@types/node" "*"
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.nlark.com/@types/parse-json/download/@types/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -1158,10 +1165,15 @@
   resolved "https://registry.npm.taobao.org/@xtuc/long/download/@xtuc/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha1-0pHGpOl5ibXGHZrPOWrk/hM6cY0=
 
-abab@^2.0.3, abab@^2.0.5:
+abab@^2.0.3:
   version "2.0.5"
   resolved "https://registry.npm.taobao.org/abab/download/abab-2.0.5.tgz?cache=0&sync_timestamp=1599850271460&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fabab%2Fdownload%2Fabab-2.0.5.tgz#c0b678fb32d60fc1219c784d6a826fe385aeb79a"
   integrity sha1-wLZ4+zLWD8EhnHhNaoJv44Wut5o=
+
+abab@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.npmjs.org/abab/-/abab-2.0.5.tgz#c0b678fb32d60fc1219c784d6a826fe385aeb79a"
+  integrity sha512-9IK9EadsbHo6jLWIpxpR6pL0sazTXV6+SQv25ZB+F7Bj9mJNaOc4nCRabwd5M/JwmUa8idz6Eci6eKfJryPs6Q==
 
 accepts@~1.3.7:
   version "1.3.7"
@@ -2491,6 +2503,13 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.npm.taobao.org/functional-red-black-tree/download/functional-red-black-tree-1.0.1.tgz?cache=0&sync_timestamp=1577806294691&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffunctional-red-black-tree%2Fdownload%2Ffunctional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
+gems-tools@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.npmjs.org/gems-tools/-/gems-tools-0.0.14.tgz#e29e8c8b27388e0664385416c9f7aaa3a9daf62f"
+  integrity sha512-yhn318wyt+kVqEBViEcSMpjwYxTr/0RZ8PIkEdIup5F9NX5hJKLXL0FUZ0qMVBWlse0yXRWFz3qfIsoB7PxzIQ==
+  dependencies:
+    tslib "^2.3.1"
+
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://registry.nlark.com/gensync/download/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
@@ -3470,6 +3489,8 @@ loader-runner@^4.2.0:
 
 local-common-util@../npm/local-common-util:
   version "1.0.0"
+  dependencies:
+    tslib "^2.3.1"
 
 locate-path@^5.0.0:
   version "5.0.0"
@@ -3727,6 +3748,11 @@ node-releases@^1.1.76:
   version "1.1.76"
   resolved "https://registry.nlark.com/node-releases/download/node-releases-1.1.76.tgz?cache=0&sync_timestamp=1632151316505&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnode-releases%2Fdownload%2Fnode-releases-1.1.76.tgz#df245b062b0cafbd5282ab6792f7dccc2d97f36e"
   integrity sha1-3yRbBisMr71SgqtnkvfczC2X824=
+
+nodemailer@^6.6.5:
+  version "6.6.5"
+  resolved "https://registry.npmmirror.com/nodemailer/download/nodemailer-6.6.5.tgz?cache=0&sync_timestamp=1632399712768&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fnodemailer%2Fdownload%2Fnodemailer-6.6.5.tgz#f9f6953cee5cfe82cbea152eeddacf7a0442049a"
+  integrity sha1-+faVPO5c/oLL6hUu7drPegRCBJo=
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
@@ -4757,7 +4783,7 @@ tsconfig-paths@3.11.0, tsconfig-paths@^3.10.1, tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@2.3.1:
+tslib@2.3.1, tslib@^2.3.1:
   version "2.3.1"
   resolved "https://registry.nlark.com/tslib/download/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha1-6KM1rdXOrlGqJh0ypJAVjvBC7wE=

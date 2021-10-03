@@ -12,7 +12,7 @@
       <g-form-item class="fz-20" label="密码：" prop="pwd">
         <g-input
           v-model="form.pwd"
-          placeholder="请输入你的密码"
+          placeholder="请输入你的密码（6-30位）"
           type="password"
           name="pwd"
         />
@@ -28,15 +28,13 @@ import { defineComponent, ref } from "vue";
 import { GFormRef } from "/@/components/form/Form.vue";
 import { gMessage, useForm } from "/@/hooks";
 import { validationRule } from "/@/utils/Validation/rules";
-
+import { LoginBase } from "local-common-util";
+import { loginAndRegisterReq } from "/@/api/Users";
+import { encryptStrByObj } from "/@/utils/encrypt";
 export default defineComponent({
   setup() {
-    class LoginForm {
-      email = "";
-      pwd = "";
-    }
     const formRef = ref<GFormRef>();
-    const form = ref(new LoginForm());
+    const form = ref(new LoginBase());
     const rules: GFormRules = {
       email: {
         validator(v: string) {
@@ -45,14 +43,25 @@ export default defineComponent({
       },
       pwd: {
         validator(v: string) {
-          return v.length < 6 && "密码不能小于6位";
+          if (v.length < 6) return "密码不能小于6位";
+          if (v.length > 30) return "密码不能大于30位";
         }
       }
     };
     const { validate } = useForm(form, rules);
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       const { valid } = validate();
-      if (valid) gMessage.success("成了");
+      if (!valid) return;
+      const { data } = await loginAndRegisterReq(
+        encryptStrByObj(form.value, ["pwd"])
+      );
+      if (data.isLogin) {
+        console.log(data.userInfo);
+      } else {
+        if (data.isSend) {
+          gMessage.success(data.msg as string);
+        } else gMessage.warning(data.msg as string);
+      }
     };
     return { form, formRef, handleSubmit };
   }

@@ -1,9 +1,15 @@
 import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
-import gConsole from "./utils/useConsole";
+import { AppModule } from "./modules/main/app.module";
+import { database, gConsole, gMail } from "./utils";
 import { networkInterfaces } from "os";
+import * as path from "path";
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  database.dbInit(path.join(__dirname, "..", "db"));
+  gMail.init(path.join(__dirname, "..", "assets"));
+  const app = await NestFactory.create(AppModule, {
+    cors: true
+  });
+  app.setGlobalPrefix(process.env.VERSION);
   const port = process.env.PORT || 10050;
   await app.listen(port);
   const network = networkInterfaces();

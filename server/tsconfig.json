@@ -16,10 +16,7 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "/@/*": ["src/*"]
-    }
+    "noFallthroughCasesInSwitch": false
   },
   "include": ["src/**/*.ts", "src/*.ts"],
   "exclude": ["node_modules"]
