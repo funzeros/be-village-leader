@@ -48,20 +48,20 @@ export class ApiResult {
   public static Error_Filter(status: number, message = "请求成功", data?: any) {
     return new ApiResult(1, status, message, data);
   }
-  public static TRY_CATCH(tryFn: () => ApiResult) {
+  public static async TRY_CATCH(tryFn: () => Promise<ApiResult>) {
     try {
-      return tryFn();
+      return await tryFn();
     } catch (error) {
       return ApiResult.SYS_ERROR(error.message);
     }
   }
 }
-// Decorato
+// Decorator
 export const TryCatch = (_target, _name, descriptor) => {
   const fn = descriptor.value;
-  descriptor.value = function (...rest: any) {
-    return ApiResult.TRY_CATCH(() => {
-      return fn.call(this, ...rest);
+  descriptor.value = async function (...rest: any) {
+    return await ApiResult.TRY_CATCH(async () => {
+      return await fn.call(this, ...rest);
     });
   };
   return descriptor;

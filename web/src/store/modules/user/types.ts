@@ -1,12 +1,6 @@
-import { Game } from "/@/hooks/useGame";
-import { KBWS } from "/@/hooks/useWs";
-import { UserInfoDTO } from "/@/types/Users/dto";
+import { UserInfo } from "local-common-util";
 
 // types.ts
 export interface UserState {
-  userInfo?: UserInfoDTO;
-  dressedEquips: DressedEquips;
-  game?: Game;
-  KBWSIns?: KBWS; // KB WS 实例
-  msgList: ChatVO[];
+  userInfo?: UserInfo;
 }

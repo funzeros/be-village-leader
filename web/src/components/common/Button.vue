@@ -1,5 +1,10 @@
 <template>
-  <button class="g-button" :class="[`g-button-${type}`]" v-bind="$attrs">
+  <button
+    class="g-button"
+    type="button"
+    :class="[`g-button-${type}`, (disabled && 'disabled') || '']"
+    v-bind="$attrs"
+  >
     <slot></slot>
   </button>
 </template>
@@ -12,6 +17,10 @@ export default defineComponent({
     type: {
       type: String,
       default: "primary"
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   setup() {
@@ -35,14 +44,27 @@ $button-text-color: #fff;
   cursor: pointer;
   position: relative;
   transition: transform 0.1s ease-in;
+  &[plain] {
+    border: 1px solid;
+    padding: 7px 16px;
+  }
   &-primary {
     background-color: $primary;
+    &[plain] {
+      background-color: $button-text-color;
+      color: $primary;
+      border-color: $primary;
+    }
   }
   &:focus {
     outline: 0;
   }
   &:active {
     transform: scale(0.9);
+  }
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 }
 </style>

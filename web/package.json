@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "sync": "yarn add file:../npm/local-common-util",
+    "dev": "vite --host",
     "build": "vite build && esno ./build/script/postBuild.ts && esno ./build/copy_static.js",
     "serve": "vite preview",
     "lint:prettier": "prettier --write \"src/**/*.{ts,js,json,tsx,css,less,scss,vue,html,md}\"",
@@ -11,6 +12,7 @@
     "ls-lint": "npx ls-lint",
     "report": "vue-cli-service build --report",
     "upi": "yarn upgrade-interactive",
+    "clean": "yarn cache clean||npm cache clean",
     "fix": "git config --global core.autocrlf input"
   },
   "dependencies": {
@@ -20,8 +22,9 @@
     "change-case": "^4.1.2",
     "dayjs": "^1.10.7",
     "gems-tools": "^0.0.14",
-    "local-common-util": "../npm/local-common-util",
+    "local-common-util": "^0.0.2",
     "lodash": "^4.17.21",
+    "md5": "^2.3.0",
     "nprogress": "^0.2.0",
     "nzh": "^1.0.5",
     "qs": "^6.10.1",
@@ -39,6 +42,7 @@
     "@types/animejs": "^3.1.4",
     "@types/fs-extra": "^9.0.13",
     "@types/lodash": "^4.14.175",
+    "@types/md5": "^2.3.1",
     "@types/nprogress": "^0.2.0",
     "@types/qs": "^6.9.7",
     "@types/store": "^2.0.2",

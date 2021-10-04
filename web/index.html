@@ -14,7 +14,9 @@
     <title><%= title %></title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <div class="pre-loading"></div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
     <!-- 使用CDN加速的JS文件，配置在vue.config.js下 -->
     <% for (var i in js) { %>

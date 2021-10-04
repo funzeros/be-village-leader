@@ -1,13 +1,13 @@
 import { createTransport, Transporter } from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { gConsole } from ".";
+import { gConsole } from "./index";
 import * as fs from "fs";
 import * as path from "path";
 import { GMath } from "gems-tools";
 export const useMail = function () {
   const user = {
-    name: "2366282414@qq.com",
+    name: "wydcz_game@qq.com",
     pass: "jnbmlsrhpdyhdhge"
   };
   let basePath = "";
@@ -25,8 +25,8 @@ export const useMail = function () {
       port: 465,
       secure: true, // true for 465, false for other ports
       auth: {
-        user: user.name, // generated ethereal user
-        pass: user.pass // generated ethereal password
+        user: user.name,
+        pass: user.pass
       }
     });
     gConsole.color("邮件初始化完成", "greenBG");
@@ -45,7 +45,7 @@ export const useMail = function () {
     const randomCode = GMath.randomLenNum(6, false) as string;
     const html = codeHtml.replace("$mail", to).replace("$code", randomCode);
     const info = await send({
-      from: '"《我要当村长》" <2366282414@qq.com>',
+      from: `"《我要当村长》" <${user.name}>`,
       to,
       subject: "您的注册验证码到了 ✔",
       text: "《我要当村长》注册验证码",
@@ -55,7 +55,7 @@ export const useMail = function () {
       codeMailCache.delete(to);
     }, 5 * 60 * 1000);
     setTimeout(() => {
-      codeMailCache.get(to).canReSend = true;
+      if (codeMailCache.has(to)) codeMailCache.get(to).canReSend = true;
     }, 60 * 1000);
     codeMailCache.set(to, { code: randomCode, canReSend: false, timer });
     return {
@@ -64,10 +64,32 @@ export const useMail = function () {
       info
     };
   }
+  function validCode(email: string, code: string) {
+    if (codeMailCache.has(email)) {
+      const mailIns = codeMailCache.get(email);
+      if (mailIns.code === code) {
+        clearTimeout(mailIns.timer);
+        codeMailCache.delete(email);
+        return {
+          valid: true,
+          msg: "验证成功"
+        };
+      }
+      return {
+        valid: false,
+        msg: "验证码错误"
+      };
+    }
+    return {
+      valid: false,
+      msg: "验证码已失效"
+    };
+  }
   return {
     init,
     send,
-    sendValidCode
+    sendValidCode,
+    validCode
   };
 };
 export const gMail = useMail();

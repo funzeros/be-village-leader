@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
-import { LoginBase } from "local-common-util";
+import { Body, Controller, Headers, Post } from "@nestjs/common";
+import { LoginDTO, RegisterBase } from "local-common-util";
 import { ApiResult, TryCatch, database, ValidBody } from "../config";
 import { UserService } from "./user.service";
 @Controller("user")
@@ -7,17 +7,26 @@ export class UserController {
   constructor(private readonly userService: UserService) {
     database.libInit({ libName: "user", tables: [{ name: "user_base" }] });
   }
-  @Get("get_user")
-  getUser(): ApiResult {
-    return ApiResult.SUCCESS(this.userService.getUser());
-  }
   @Post("login_register")
-  @ValidBody(new LoginBase())
+  @ValidBody(new LoginDTO())
   @TryCatch
-  async loginAndRegistry(@Body() body: LoginBase): Promise<ApiResult> {
+  async loginAndRegistry(@Body() body: LoginDTO): Promise<ApiResult> {
     const userInfo = this.userService.getUserByEmail(body.email);
-
-    if (userInfo) return ApiResult.SUCCESS(this.userService.login(body));
-    return ApiResult.SUCCESS(await this.userService.register(body));
+    if (userInfo)
+      return ApiResult.SUCCESS({
+        isLogin: true,
+        userInfo: this.userService.login(body)
+      });
+    return ApiResult.SUCCESS(await this.userService.sendMailCode(body));
+  }
+  @Post("register")
+  @TryCatch
+  async registery(@Body() body: RegisterBase): Promise<ApiResult> {
+    return ApiResult.SUCCESS(this.userService.register(body));
+  }
+  @Post("token_auth")
+  @TryCatch
+  async tokenAuth(@Headers() header): Promise<ApiResult> {
+    return ApiResult.SUCCESS(this.userService.tokenAuth(header.authorization));
   }
 }

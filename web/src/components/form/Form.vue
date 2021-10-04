@@ -9,5 +9,5 @@ const gForm = defineComponent({
   }
 });
 export default gForm;
-export type GFormRef = typeof gForm;
+export type GFormRefs = InstanceType<typeof gForm>;
 </script>

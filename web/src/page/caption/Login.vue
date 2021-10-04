@@ -3,38 +3,58 @@
     <g-form ref="formRef">
       <g-form-item class="fz-20" label="邮箱：" prop="email">
         <g-input
-          v-model="form.email"
+          v-model="loginForm.email"
           placeholder="请输入你的邮箱"
           type="text"
           name="email"
+          autofocus
+          :disabled="submitLoading"
         />
       </g-form-item>
       <g-form-item class="fz-20" label="密码：" prop="pwd">
         <g-input
-          v-model="form.pwd"
+          v-model="loginForm.pwd"
           placeholder="请输入你的密码（6-30位）"
           type="password"
           name="pwd"
+          maxlength="30"
+          :disabled="submitLoading"
         />
       </g-form-item>
       <g-form-item class="fz-20" prop="pwd" center>
-        <g-button @click="handleSubmit">登录/注册</g-button>
+        <g-button :disabled="submitLoading" @click="submitAction(handleSubmit)"
+          >登录/注册</g-button
+        >
       </g-form-item>
     </g-form>
+    <register-drawer
+      ref="regDrawerRef"
+      @autoLogin="autoLogin"
+    ></register-drawer>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { GFormRef } from "/@/components/form/Form.vue";
-import { gMessage, useForm } from "/@/hooks";
+import { GFormRefs } from "/@/components/form/Form.vue";
+import { gMessage, useForm, useGRoute } from "/@/hooks";
 import { validationRule } from "/@/utils/Validation/rules";
-import { LoginBase } from "local-common-util";
+import { LoginDTO, UserInfo } from "local-common-util";
 import { loginAndRegisterReq } from "/@/api/Users";
 import { encryptStrByObj } from "/@/utils/encrypt";
+import RegisterDrawer, { RegDrawerRefs } from "./components/RegisterDrawer.vue";
+import { useStore } from "/@/store";
+import { MutationTypes } from "/@/store/modules/user/mutation-types";
+import { mainRoutePath } from "/@/const/path";
 export default defineComponent({
+  components: {
+    RegisterDrawer
+  },
   setup() {
-    const formRef = ref<GFormRef>();
-    const form = ref(new LoginBase());
+    const store = useStore();
+    const { pushRouteFullpath } = useGRoute();
+    const formRef = ref<GFormRefs>();
+    const regDrawerRef = ref<RegDrawerRefs>();
+    const loginForm = ref(new LoginDTO());
     const rules: GFormRules = {
       email: {
         validator(v: string) {
@@ -48,22 +68,41 @@ export default defineComponent({
         }
       }
     };
-    const { validate } = useForm(form, rules);
+    const { validate, submitAction, submitLoading } = useForm(loginForm, rules);
+    const loginFn = async () => {
+      const dto = encryptStrByObj(loginForm.value, ["pwd"]);
+      const { data } = await loginAndRegisterReq(dto);
+      return { data, dto };
+    };
+    const loginSuccess = (userInfo: UserInfo) => {
+      store.commit(MutationTypes.SET_USERINFO, userInfo);
+      pushRouteFullpath(mainRoutePath);
+    };
     const handleSubmit = async () => {
       const { valid } = validate();
       if (!valid) return;
-      const { data } = await loginAndRegisterReq(
-        encryptStrByObj(form.value, ["pwd"])
-      );
-      if (data.isLogin) {
-        console.log(data.userInfo);
-      } else {
+      const { data, dto } = await loginFn();
+      if (data.isLogin) loginSuccess(data.userInfo);
+      else {
         if (data.isSend) {
           gMessage.success(data.msg as string);
+          regDrawerRef.value?.open(dto);
         } else gMessage.warning(data.msg as string);
       }
     };
-    return { form, formRef, handleSubmit };
+    const autoLogin = async () => {
+      const { data } = await loginFn();
+      if (data.isLogin) loginSuccess(data.userInfo);
+    };
+    return {
+      autoLogin,
+      loginForm,
+      regDrawerRef,
+      formRef,
+      submitAction,
+      handleSubmit,
+      submitLoading
+    };
   }
 });
 </script>

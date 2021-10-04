@@ -1,1 +1,1 @@
-{"body":{},"libName":"user","name":"user_base","version":1,"createTime":"2021/10/3下午4:09:17","updateTime":"2021/10/3下午4:09:17"}
+{"libName":"user","name":"user_base","version":1,"createTime":"2021/10/4下午6:47:05","updateTime":"2021/10/4下午6:47:05","body":{"1":{"email":"984512789@qq.com","pwd":"14e1b600b1fd579f47433b88e8d85291","id":1,"token":"VZFF-f5fc79a6-984d-4061-87e5-47b2562d0124"}},"type":"list","primaryKey":"id","saveInterval":10000,"maxIndex":1}

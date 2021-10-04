@@ -1,14 +1,29 @@
-import { gConsole } from "..";
+import { gConsole, cronJob } from "../index";
 import * as fs from "fs";
 import * as path from "path";
+import { v4 as uuid } from "uuid";
 
+type RecordItem = Record<string, any>;
+type RecordExclude = string[];
+interface SearchParams {
+  where?: RecordItem;
+  exclude?: RecordExclude;
+}
+interface UpdateRes {
+  isSuccess: boolean;
+  record?: RecordItem;
+}
 export class DBTable {
   public libName: string;
   public name: string;
   public version: number;
   public createTime: string;
   public updateTime: string;
-  public body: Record<string, any>;
+  public body: Record<string, RecordItem>;
+  public type: "obj" | "list";
+  public maxIndex: number;
+  public primaryKey: string;
+  public saveInterval: number;
   constructor(options: Partial<DBTable>) {
     this.libName = options.libName;
     this.name = options.name;
@@ -16,46 +31,86 @@ export class DBTable {
     this.createTime = options.createTime || new Date().toLocaleString();
     this.updateTime = options.updateTime || new Date().toLocaleString();
     this.body = options.body || {};
+    this.type = options.type || "list";
+    this.primaryKey = options.primaryKey || "id";
+    this.saveInterval =
+      options.saveInterval || +process.env.SAVE_INTERVAL || 5 * 60 * 1000;
+    this.maxIndex = options.maxIndex || 0;
   }
-  public findArr(searchParams: { where?: Record<string, any> }) {
-    const { where } = searchParams;
+  private whereFilter(row: RecordItem, where?: RecordItem) {
+    return Object.keys(where).every(key => {
+      return where[key] === row[key];
+    });
+  }
+  private attributeExclude(row?: RecordItem, exclude?: RecordExclude) {
+    return DBTable.attributeExclude(row, exclude);
+  }
+  public static attributeExclude(row?: RecordItem, exclude?: RecordExclude) {
+    if (!row) return void 0;
+    const excludeObj = {};
+    exclude && exclude.forEach(k => (excludeObj[k] = void 0));
+    return { ...row, ...excludeObj };
+  }
+  public findArr(searchParams: SearchParams) {
+    const { where, exclude } = searchParams;
+    const bodyList = Object.values(this.body);
+    return bodyList.reduce((acc, row) => {
+      if (where) {
+        const isSame = this.whereFilter(row, where);
+        if (!isSame) return acc;
+      }
+      acc.push(this.attributeExclude(row, exclude));
+      return acc;
+    }, []);
+  }
+  public findOne(searchParams: SearchParams) {
+    const { where, exclude } = searchParams;
     const bodyList = Object.values(this.body);
     if (where) {
-      return bodyList.filter(m => {
-        return Object.keys(where).every(key => {
-          return where[key] === m[key];
-        });
+      const record = bodyList.find(m => {
+        return this.whereFilter(m, where);
       });
-    }
-    return bodyList;
-  }
-  public findOne(searchParams: { where?: Record<string, any> }) {
-    const { where } = searchParams;
-    const bodyList = Object.values(this.body);
-    if (where) {
-      return bodyList.find(m => {
-        return Object.keys(where).every(key => {
-          return where[key] === m[key];
-        });
-      });
+      return this.attributeExclude(record, exclude);
     }
     return void 0;
   }
-  public find(searchParams: { where?: Record<string, any> }) {
-    const { where } = searchParams;
+  public find(searchParams: SearchParams) {
+    const { where, exclude } = searchParams;
     const bodyKeys = Object.keys(this.body);
-    if (where) {
-      const res = {};
-      bodyKeys.forEach(k => {
-        const m = this.body[k];
-        const isSame = Object.keys(where).every(key => {
-          return where[key] === m[key];
-        });
-        if (isSame) res[k] = m;
+    const res = {};
+    bodyKeys.forEach(k => {
+      const m = this.body[k];
+      if (where) {
+        const isSame = this.whereFilter(m, where);
+        if (!isSame) return;
+      }
+      res[k] = this.attributeExclude(m, exclude);
+    });
+    return res;
+  }
+  public findByPrimaryKey(key: number | string, exclude?: RecordExclude) {
+    return this.attributeExclude(this.body[key], exclude);
+  }
+  public add(data: any) {
+    if (this.type === "list") data[this.primaryKey] = ++this.maxIndex;
+    if ([null, void 0].includes(data[this.primaryKey]))
+      data[this.primaryKey] = uuid();
+    if (data[this.primaryKey] in this.body) throw new Error("主键重复");
+    this.body[data[this.primaryKey]] = data;
+  }
+  public updateByPrimaryKey(data: any, key: number | string): UpdateRes {
+    const item = this.findByPrimaryKey(key);
+    if (item) {
+      Object.keys(data).forEach(k => {
+        if (data[k] !== void 0) item[k] = data[k];
       });
-      return res;
+      this.body[key] = item;
+      return { isSuccess: true, record: item };
     }
-    return this.body;
+    return { isSuccess: false };
+  }
+  public length() {
+    return Object.keys(this.body).length;
   }
   public static generate(json: string) {
     const oldTable = JSON.parse(json) as DBTable;
@@ -104,6 +159,20 @@ export class JSONDB {
       // 读取表至表缓存
       const fileUTF8 = fs.readFileSync(tablePath, "utf8");
       tablesCache[table.name] = DBTable.generate(fileUTF8);
+      cronJob.addInterval(
+        `WRITE_TABLE_${libName}_${table.name}`,
+        () => {
+          const content = this.getTable(libName, table.name);
+          if (content) {
+            fs.writeFileSync(
+              tablePath,
+              JSON.stringify(this.getTable(libName, table.name))
+            );
+          }
+          gConsole.color(`写入了${libName}_${table.name}`, "magentaBG");
+        },
+        tablesCache[table.name].saveInterval
+      );
       gConsole.color(`表${table.name} 初始化完成`, "greenBG");
     });
     // 表缓存添加至库缓存
@@ -114,9 +183,9 @@ export class JSONDB {
       const lib = this.dbCache.get(libName);
       const table = lib.tables[tableName];
       if (table) return table;
-      throw Error("该表不存在");
+      throw new Error(`表${tableName}不存在`);
     }
-    throw Error("该库不存在");
+    throw new Error(`库${libName}不存在`);
   }
 }
 export const database = new JSONDB();

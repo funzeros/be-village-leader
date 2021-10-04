@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import { noAuthMeta } from "./config";
+import { noAuthMeta, hadAuthMeta } from "./config";
 import Caption from "/@/layout/Caption.vue";
 export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
   path: "/:path(.*)*",
@@ -11,7 +11,7 @@ export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
 export const pageRouter: RouteRecordRaw[] = [
   {
     path: "/",
-    redirect: "/caption"
+    redirect: "/home"
   },
   {
     path: "/caption",
@@ -33,5 +33,13 @@ export const pageRouter: RouteRecordRaw[] = [
         component: () => import("/@/page/caption/Login.vue")
       }
     ]
+  }
+];
+export const viewsRouter: RouteRecordRaw[] = [
+  {
+    path: "/home",
+    name: "主页",
+    meta: hadAuthMeta,
+    component: () => import("/@/views/home/index.vue")
   }
 ];

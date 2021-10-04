@@ -12,14 +12,13 @@ const request = axios.create({
     return status >= 200 && status <= 600; // 全部允许, 不会遇到错误就停止
   }
 });
-
 request.interceptors.request.use(
   config => {
     const store = useStore();
     const isToken = (config.headers || {}).isToken === false;
     const accessToken = store.state.user.userInfo?.token;
     if (accessToken && !isToken) {
-      config.headers["Authorization"] = "Bearer " + accessToken; // token
+      config.headers["Authorization"] = accessToken;
     }
     if (config.method === "get") {
       config.paramsSerializer = function (params) {

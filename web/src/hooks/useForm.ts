@@ -1,8 +1,9 @@
-import { isRef, unref } from "vue";
+import { isRef, unref, ref } from "vue";
 import { gMessage } from ".";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const useForm = function (model: any, rules: GFormRules) {
+const useForm = function (model: any, rules: GFormRules = {}) {
+  const submitLoading = ref(false);
   return {
     validate() {
       let cModel = model;
@@ -17,7 +18,16 @@ const useForm = function (model: any, rules: GFormRules) {
         return acc;
       }, [] as GFormErrorList);
       return { valid: !res.length, error: res };
-    }
+    },
+    async submitAction(action: () => Promise<void>) {
+      try {
+        submitLoading.value = true;
+        await action();
+      } finally {
+        submitLoading.value = false;
+      }
+    },
+    submitLoading
   };
 };
 

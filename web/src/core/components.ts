@@ -3,6 +3,7 @@ import { App, Component } from "vue";
 // common
 import GButton from "/@/components/common/Button.vue";
 import GImg from "/@/components/common/Image.vue";
+import GDrawer from "/@/components/common/Drawer.vue";
 // emojiIcon
 import EmojiIcon from "/@/components/emojiIcon/index.vue";
 // form
@@ -13,6 +14,7 @@ const components: Component[] = [
   // common
   GImg,
   GButton,
+  GDrawer,
   // emojiIcon
   EmojiIcon,
   // form

@@ -29,3 +29,11 @@ setRem();
 window.onresize = () => {
   setRem();
 };
+
+function perLoading() {
+  const oPerLoading = document.querySelector(".pre-loading");
+  oPerLoading.innerHTML="正在加载游戏资源".split("").map((m)=>{
+    return `<span>${m}</span>`
+  }).join("");
+}
+perLoading();

@@ -5,6 +5,7 @@ import { router } from "./index";
 import { gMessage } from "../hooks";
 
 const errorCode = {
+  "201": "出错啦",
   // 4dd
   "401": "当前操作没有权限或者登入过期",
   "403": "当前操作没有权限",
@@ -88,6 +89,10 @@ export const processResponseData = (
       return resData;
     }
   } else {
+    if (resData.status !== 200) {
+      gMessage.error(resData.message);
+      throw Error(resData.message);
+    }
     return resData;
   }
 };
