@@ -98,7 +98,11 @@ export class DBTable {
     if (data[this.primaryKey] in this.body) throw new Error("主键重复");
     this.body[data[this.primaryKey]] = data;
   }
+  private refreshUpdateTime() {
+    this.updateTime = new Date().toLocaleString();
+  }
   public updateByPrimaryKey(data: any, key: number | string): UpdateRes {
+    this.refreshUpdateTime();
     const item = this.findByPrimaryKey(key);
     if (item) {
       Object.keys(data).forEach(k => {
